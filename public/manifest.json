@@ -1,0 +1,98 @@
+{
+  "name": "Vexl Ambassador Portal",
+  "short_name": "Vexl Portal",
+  "description": "Your gateway to spreading the P2P Bitcoin revolution",
+  "theme_color": "#FCEE0A",
+  "background_color": "#000000",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "categories": ["finance", "education", "business"],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "type": "image/png",
+      "sizes": "1170x2532",
+      "label": "Home screen showing ambassador portal"
+    },
+    {
+      "src": "/screenshots/workshop.png",
+      "type": "image/png",
+      "sizes": "1170x2532",
+      "label": "Interactive workshop presentation"
+    },
+    {
+      "src": "/screenshots/builder.png",
+      "type": "image/png",
+      "sizes": "1170x2532",
+      "label": "Visual presentation builder"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Workshop",
+      "short_name": "Workshop",
+      "description": "Start interactive workshop",
+      "url": "/workshop",
+      "icons": [{ "src": "/icons/workshop.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your dashboard",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/dashboard.png", "sizes": "96x96" }]
+    }
+  ]
+}

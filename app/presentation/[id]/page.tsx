@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Menu, X, Home } from 'lucide-react';
 import Link from 'next/link';
+import { vexlBrand } from '@/lib/vexl-brand-manual';
+import PolishedPhoneMockup from '@/components/interactive/PolishedPhoneMockup';
+import NetworkVisualization from '@/components/interactive/NetworkVisualization';
 
 // Full-screen sections that adapt to content
 const sections = [
@@ -295,6 +298,89 @@ const sections = [
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+    )
+  },
+  {
+    id: 'phone-demo',
+    type: 'interactive',
+    content: (
+      <section className="min-h-screen w-full bg-black text-white flex items-center justify-center p-8 md:p-16">
+        <div className="max-w-7xl w-full">
+          <motion.h1 
+            className="text-6xl md:text-8xl font-black text-center mb-8"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            SEE IT IN <span style={{ color: vexlBrand.colors.primary.yellow }}>ACTION</span>
+          </motion.h1>
+          
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-400 text-center mb-12 max-w-4xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Experience the Vexl app interface - real P2P trading without surveillance
+          </motion.p>
+          
+          <div className="flex justify-center">
+            <PolishedPhoneMockup
+              title="Your Network at Your Fingertips"
+              description="Trade Bitcoin with people you trust, not anonymous strangers"
+              showNotification={true}
+              notificationText="Mike wants to sell 0.025 BTC"
+              animate={true}
+            />
+          </div>
+        </div>
+      </section>
+    )
+  },
+  {
+    id: 'network-visualization',
+    type: 'interactive',
+    content: (
+      <section className="min-h-screen w-full bg-black text-white flex items-center justify-center p-8 md:p-16">
+        <div className="max-w-7xl w-full">
+          <motion.h1 
+            className="text-6xl md:text-8xl font-black text-center mb-8"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            YOUR NETWORK IS YOUR<br />
+            <span style={{ color: vexlBrand.colors.primary.yellow }}>NET WORTH</span>
+          </motion.h1>
+          
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-400 text-center mb-12 max-w-4xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Every contact multiplies your trading possibilities exponentially
+          </motion.p>
+          
+          <motion.div 
+            className="h-[500px] relative"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <NetworkVisualization interactive={true} showLabels={false} />
+          </motion.div>
+          
+          <motion.div 
+            className="text-center mt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+          >
+            <p className="text-lg text-gray-400">
+              Move your mouse to interact with your network
+            </p>
+          </motion.div>
         </div>
       </section>
     )

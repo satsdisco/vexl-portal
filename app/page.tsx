@@ -5,14 +5,19 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ArrowRight, PlayCircle, Users, BookOpen, Trophy, Sparkles, Shield, Globe } from 'lucide-react';
 import Link from 'next/link';
+import { vexlBrand } from '@/lib/vexl-brand-manual';
+import { animations, interactiveElement } from '@/lib/animations';
+import PolishedLoader from '@/components/PolishedLoader';
 
 export default function PortalHome() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
+    setTimeout(() => setIsLoading(false), 1000); // Show loader briefly for polish
   }, []);
 
   const features = [
@@ -56,6 +61,10 @@ export default function PortalHome() {
     { value: "0%", label: "KYC Required", icon: Shield },
     { value: "24/7", label: "P2P Trading", icon: Sparkles }
   ];
+
+  if (isLoading) {
+    return <PolishedLoader text="Welcome to Vexl" fullScreen />;
+  }
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">

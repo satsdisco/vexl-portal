@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Save, Play, Plus, Trash2, Eye, Edit3, ChevronUp, ChevronDown, Settings } from 'lucide-react';
+import { Save, Play, Plus, Trash2, Eye, Edit3, ChevronUp, ChevronDown, Settings, Smartphone, Network } from 'lucide-react';
 import Link from 'next/link';
+import { vexlBrand } from '@/lib/vexl-brand-manual';
+import PolishedPhoneMockup from '@/components/interactive/PolishedPhoneMockup';
+import NetworkVisualization from '@/components/interactive/NetworkVisualization';
+import ScreenshotUploader from '@/components/ScreenshotUploader';
 
 // Section templates - full screen, adaptive content
 const sectionTemplates = {
@@ -80,6 +84,21 @@ const sectionTemplates = {
       titleHighlight: 'NET WORTH',
       subtitle: 'Every contact multiplies your trading possibilities',
       showInteractive: true
+    }
+  },
+  phoneMockup: {
+    name: 'Phone Demo',
+    description: 'Interactive phone mockup',
+    preview: '📱',
+    defaultContent: {
+      title: 'SEE IT IN',
+      titleHighlight: 'ACTION',
+      subtitle: 'Experience the Vexl app interface',
+      phoneTitle: 'Real P2P Trading',
+      phoneDescription: 'No middleman. No surveillance. Just Bitcoin.',
+      showNotification: true,
+      notificationText: 'New offer from your network',
+      screenshots: []
     }
   },
   statsSection: {
@@ -304,13 +323,234 @@ export default function PresentationBuilder() {
           </div>
         )}
         
-        {/* Add other section types here */}
+        {currentSection.type === 'networkVisualization' && (
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-6xl md:text-8xl font-black text-center mb-8">
+              <EditableText
+                value={currentSection.title}
+                onChange={(val) => updateSection('title', val)}
+                className="inline"
+              />
+              <br />
+              <EditableText
+                value={currentSection.titleHighlight}
+                onChange={(val) => updateSection('titleHighlight', val)}
+                className="inline"
+                style={{ color: vexlBrand.colors.primary.yellow }}
+              />
+            </h1>
+            
+            <EditableText
+              value={currentSection.subtitle}
+              onChange={(val) => updateSection('subtitle', val)}
+              className="text-xl md:text-2xl text-gray-400 text-center mb-12 max-w-4xl mx-auto block"
+            />
+            
+            <div className="h-[500px] relative">
+              <NetworkVisualization interactive={true} showLabels={true} />
+            </div>
+          </div>
+        )}
+        
+        {currentSection.type === 'phoneMockup' && (
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-6xl md:text-8xl font-black text-center mb-8">
+              <EditableText
+                value={currentSection.title}
+                onChange={(val) => updateSection('title', val)}
+                className="inline"
+              />
+              {' '}
+              <EditableText
+                value={currentSection.titleHighlight}
+                onChange={(val) => updateSection('titleHighlight', val)}
+                className="inline"
+                style={{ color: vexlBrand.colors.primary.yellow }}
+              />
+            </h1>
+            
+            <EditableText
+              value={currentSection.subtitle}
+              onChange={(val) => updateSection('subtitle', val)}
+              className="text-xl md:text-2xl text-gray-400 text-center mb-12 max-w-4xl mx-auto block"
+            />
+            
+            <div className="flex justify-center mb-12">
+              <PolishedPhoneMockup
+                screenshots={currentSection.screenshots || []}
+                title={currentSection.phoneTitle}
+                description={currentSection.phoneDescription}
+                showNotification={currentSection.showNotification}
+                notificationText={currentSection.notificationText}
+              />
+            </div>
+            
+            {/* Screenshot Uploader */}
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-lg font-bold mb-4">Phone Screenshots</h3>
+              <ScreenshotUploader
+                screenshots={currentSection.screenshots || []}
+                onScreenshotsChange={(screenshots) => updateSection('screenshots', screenshots)}
+                maxScreenshots={5}
+              />
+            </div>
+          </div>
+        )}
+        
+        {currentSection.type === 'howItWorks' && (
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-6xl md:text-8xl font-black text-center mb-16">
+              <EditableText
+                value={currentSection.title}
+                onChange={(val) => updateSection('title', val)}
+                className="inline"
+              />
+              {' '}
+              <EditableText
+                value={currentSection.titleHighlight}
+                onChange={(val) => updateSection('titleHighlight', val)}
+                className="inline"
+                style={{ color: vexlBrand.colors.primary.yellow }}
+              />
+            </h1>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {currentSection.steps?.map((step: any, i: number) => (
+                <div
+                  key={i}
+                  className="bg-gray-900 rounded-2xl p-8 text-center"
+                >
+                  <div className="text-6xl mb-4">{step.emoji}</div>
+                  <div className="text-4xl font-black mb-4" style={{ color: vexlBrand.colors.primary.yellow }}>
+                    {step.number}
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                  <p className="text-gray-400">{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {currentSection.type === 'privacySection' && (
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-6xl md:text-8xl font-black text-center mb-8">
+              <EditableText
+                value={currentSection.title}
+                onChange={(val) => updateSection('title', val)}
+                className="inline"
+              />
+              {' '}
+              <EditableText
+                value={currentSection.titleHighlight}
+                onChange={(val) => updateSection('titleHighlight', val)}
+                className="inline"
+                style={{ color: vexlBrand.colors.primary.yellow }}
+              />
+            </h1>
+            
+            <EditableText
+              value={currentSection.subtitle}
+              onChange={(val) => updateSection('subtitle', val)}
+              className="text-xl md:text-2xl text-gray-400 text-center mb-6 max-w-4xl mx-auto block"
+            />
+            
+            <EditableText
+              value={currentSection.mainText}
+              onChange={(val) => updateSection('mainText', val)}
+              className="text-2xl md:text-3xl text-center mb-12 max-w-4xl mx-auto block"
+            />
+            
+            <div className="py-6 px-8 mb-12" style={{ backgroundColor: vexlBrand.colors.primary.yellow }}>
+              <h2 className="text-2xl md:text-3xl font-black text-center text-black">
+                <EditableText
+                  value={currentSection.bannerText}
+                  onChange={(val) => updateSection('bannerText', val)}
+                  className="text-black"
+                />
+              </h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
+              <div className="bg-gray-900 rounded-2xl p-8">
+                <h3 className="text-xl text-gray-400 mb-6">{currentSection.phoneTitle}</h3>
+                <div className="space-y-3">
+                  {currentSection.contacts?.map((contact: any, i: number) => (
+                    <div 
+                      key={i}
+                      className={`p-4 rounded-lg ${
+                        contact.highlight 
+                          ? 'bg-yellow-400 text-black' 
+                          : 'bg-gray-800'
+                      }`}
+                    >
+                      <div className="font-bold">{contact.name}</div>
+                      <div className={contact.highlight ? 'opacity-75' : 'text-gray-400'}>
+                        {contact.phone}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="bg-gray-900 rounded-2xl p-8 text-center">
+                <h3 className="text-xl text-gray-400 mb-6">{currentSection.serverTitle}</h3>
+                <div className="bg-black p-6 rounded-lg mb-6">
+                  <div className="font-mono text-xl md:text-2xl mb-4" style={{ color: vexlBrand.colors.primary.yellow }}>
+                    {currentSection.hash}
+                  </div>
+                  <div className="text-gray-500 text-sm">
+                    {currentSection.hashDescription}
+                  </div>
+                </div>
+                <div className="text-8xl mb-4">🔒</div>
+                <p className="text-lg text-gray-300">
+                  {currentSection.serverMessage}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {currentSection.type === 'statsSection' && (
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-6xl md:text-8xl font-black text-center mb-16">
+              <EditableText
+                value={currentSection.title}
+                onChange={(val) => updateSection('title', val)}
+                className="inline"
+              />
+              {' '}
+              <EditableText
+                value={currentSection.titleHighlight}
+                onChange={(val) => updateSection('titleHighlight', val)}
+                className="inline"
+                style={{ color: vexlBrand.colors.primary.yellow }}
+              />
+            </h1>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {currentSection.stats?.map((stat: any, i: number) => (
+                <div
+                  key={i}
+                  className="bg-gray-900/50 backdrop-blur border border-gray-800 rounded-lg p-6 text-center"
+                >
+                  <div className="text-4xl mb-3">{stat.emoji}</div>
+                  <div className="text-3xl font-bold mb-1" style={{ color: vexlBrand.colors.primary.yellow }}>
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-gray-400">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   };
   
   // Inline editable text component
-  const EditableText = ({ value, onChange, className = '' }: { value: string; onChange: (val: string) => void; className?: string }) => {
+  const EditableText = ({ value, onChange, className = '', style }: { value: string; onChange: (val: string) => void; className?: string; style?: React.CSSProperties }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [tempValue, setTempValue] = useState(value);
     
@@ -344,6 +584,7 @@ export default function PresentationBuilder() {
       <span 
         onClick={() => setIsEditing(true)}
         className={`cursor-pointer hover:bg-gray-800/50 px-1 rounded transition ${className}`}
+        style={style}
       >
         {value}
       </span>
