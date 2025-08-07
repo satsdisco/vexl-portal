@@ -280,18 +280,20 @@ export default function NewWorkshopPage() {
                 </div>
                 
                 {/* Speaker Notes */}
-                <div className="mt-4">
-                  <label className="block text-sm font-bold text-gray-400 mb-2">
-                    SPEAKER NOTES
-                  </label>
-                  <textarea
-                    value={(currentSlide.notes as string) || ''}
-                    onChange={(e) => updateSlide({ notes: e.target.value })}
-                    className="w-full bg-gray-900 rounded p-3 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-yellow-400"
-                    placeholder="Add notes for this slide (only visible to presenter)"
-                    rows={3}
-                  />
-                </div>
+                {currentSlide && (
+                  <div className="mt-4">
+                    <label className="block text-sm font-bold text-gray-400 mb-2">
+                      SPEAKER NOTES
+                    </label>
+                    <textarea
+                      value={(currentSlide.notes as string) || ''}
+                      onChange={(e) => updateSlide({ notes: e.target.value })}
+                      className="w-full bg-gray-900 rounded p-3 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-yellow-400"
+                      placeholder="Add notes for this slide (only visible to presenter)"
+                      rows={3}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
