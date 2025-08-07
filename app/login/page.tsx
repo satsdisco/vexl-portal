@@ -22,14 +22,31 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    const result = isLogin 
-      ? await auth.login(formData.email || formData.username, formData.password)
-      : await auth.register(formData.username, formData.email, formData.password);
+    // Demo mode - bypass authentication
+    if (formData.email === 'demo@vexl.it' || formData.username === 'demo') {
+      localStorage.setItem('token', 'demo-token');
+      localStorage.setItem('user', JSON.stringify({ 
+        username: 'demo', 
+        email: 'demo@vexl.it',
+        role: 'ambassador' 
+      }));
+      router.push('/dashboard');
+      return;
+    }
+
+    // Note: Strapi registration is currently disabled
+    if (!isLogin) {
+      setError('Registration is currently disabled. Use demo@vexl.it to explore.');
+      setLoading(false);
+      return;
+    }
+
+    const result = await auth.login(formData.email || formData.username, formData.password);
 
     if (result.success) {
       router.push('/dashboard');
     } else {
-      setError(result.error || 'An error occurred');
+      setError(result.error || 'Use demo@vexl.it for demo access');
     }
     setLoading(false);
   };
@@ -114,6 +131,13 @@ export default function LoginPage() {
           </div>
         </div>
 
+        {/* Demo Notice */}
+        <div className="mt-6 p-4 bg-yellow-400/10 border border-yellow-400/30 rounded-lg">
+          <p className="text-sm text-yellow-400 text-center">
+            🎯 Demo Access: Use <strong>demo@vexl.it</strong> to explore
+          </p>
+        </div>
+        
         <div className="mt-8 text-center">
           <Link href="/" className="text-gray-400 hover:text-white">
             ← Back to Home
