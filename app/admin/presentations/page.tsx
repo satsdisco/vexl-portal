@@ -90,8 +90,20 @@ const slideTemplates = {
   }
 };
 
+interface Slide {
+  id: string;
+  type: string;
+  [key: string]: any;
+}
+
+interface Presentation {
+  title: string;
+  slides: Slide[];
+  id?: string;
+}
+
 export default function PresentationEditor() {
-  const [presentation, setPresentation] = useState({
+  const [presentation, setPresentation] = useState<Presentation>({
     title: 'New Presentation',
     slides: []
   });
@@ -103,7 +115,9 @@ export default function PresentationEditor() {
   const currentSlide = presentation.slides[currentSlideIndex];
   
   const addSlide = (templateKey: string) => {
-    const template = slideTemplates[templateKey];
+    const template = slideTemplates[templateKey as keyof typeof slideTemplates];
+    if (!template) return;
+    
     const newSlide = {
       id: Date.now().toString(),
       type: templateKey,
