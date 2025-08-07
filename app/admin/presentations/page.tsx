@@ -224,7 +224,7 @@ export default function PresentationEditor() {
             <p className="text-xl text-center mb-12">{slide.description}</p>
             
             <div className="flex justify-center gap-4 mb-8">
-              {slide.tabs.map((tab, i) => (
+              {slide.tabs.map((tab: string, i: number) => (
                 <button
                   key={i}
                   className={`px-6 py-3 rounded ${
@@ -245,7 +245,7 @@ export default function PresentationEditor() {
             <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
               <div className="bg-gray-900 rounded-lg p-6">
                 <h3 className="text-gray-400 mb-4">{slide.leftPanel.title}</h3>
-                {slide.leftPanel.contacts.map((contact, i) => (
+                {slide.leftPanel.contacts.map((contact: any, i: number) => (
                   <div 
                     key={i}
                     className={`p-3 mb-2 rounded ${
