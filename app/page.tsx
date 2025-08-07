@@ -153,10 +153,10 @@ export default function PortalHome() {
           transition={{ delay: 0.5 }}
         >
           <Link 
-            href="/workshop"
+            href="/presentation/demo"
             className="group px-8 py-4 bg-yellow-400 text-black font-bold rounded-lg hover:bg-yellow-500 transition flex items-center justify-center gap-2"
           >
-            Start Workshop
+            View Full Presentation
             <ArrowRight className="group-hover:translate-x-1 transition" size={20} />
           </Link>
           <Link 

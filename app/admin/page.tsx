@@ -33,7 +33,7 @@ export default function AdminDashboard() {
             <p className="text-gray-400 text-sm">Create and manage beautiful presentations</p>
           </div>
           <Link
-            href="/admin/presentations"
+            href="/admin/builder"
             className="px-6 py-3 bg-yellow-400 text-black font-bold rounded-lg hover:bg-yellow-500 transition flex items-center gap-2"
           >
             <Plus size={20} />
