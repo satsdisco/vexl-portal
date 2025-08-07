@@ -245,7 +245,7 @@ export default function NewWorkshopPage() {
                       {slide.title}
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {slide.template || slide.type}
+                      {slide?.template || slide?.type || 'slide'}
                     </div>
                   </div>
                 </div>
@@ -335,7 +335,7 @@ export default function NewWorkshopPage() {
           </div>
 
           {/* Right Panel - Slide Editor */}
-          {!previewMode && (
+          {!previewMode && currentSlide && (
             <div className="w-96 border-l border-gray-800 bg-gray-950">
               <SlideBuilder 
                 slide={currentSlide} 
