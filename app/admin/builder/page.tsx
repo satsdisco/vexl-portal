@@ -99,20 +99,31 @@ const sectionTemplates = {
   }
 };
 
+interface Section {
+  id: string;
+  type: string;
+  [key: string]: any;
+}
+
+interface Presentation {
+  title: string;
+  sections: Section[];
+}
+
 export default function PresentationBuilder() {
-  const [presentation, setPresentation] = useState({
+  const [presentation, setPresentation] = useState<Presentation>({
     title: 'New Presentation',
     sections: []
   });
   
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [previewMode, setPreviewMode] = useState(false);
-  const [editingField, setEditingField] = useState(null);
+  const [editingField, setEditingField] = useState<string | null>(null);
   
   const currentSection = presentation.sections[currentSectionIndex];
   
-  const addSection = (templateKey) => {
-    const template = sectionTemplates[templateKey];
+  const addSection = (templateKey: string) => {
+    const template = sectionTemplates[templateKey as keyof typeof sectionTemplates];
     if (!template) return;
     
     const newSection = {
@@ -129,7 +140,7 @@ export default function PresentationBuilder() {
     setCurrentSectionIndex(presentation.sections.length);
   };
   
-  const updateSection = (field, value) => {
+  const updateSection = (field: string, value: any) => {
     const newSections = [...presentation.sections];
     newSections[currentSectionIndex] = {
       ...currentSection,
@@ -141,7 +152,7 @@ export default function PresentationBuilder() {
     });
   };
   
-  const moveSection = (from, to) => {
+  const moveSection = (from: number, to: number) => {
     const newSections = [...presentation.sections];
     const [removed] = newSections.splice(from, 1);
     newSections.splice(to, 0, removed);
@@ -152,7 +163,7 @@ export default function PresentationBuilder() {
     setCurrentSectionIndex(to);
   };
   
-  const deleteSection = (index) => {
+  const deleteSection = (index: number) => {
     const newSections = presentation.sections.filter((_, i) => i !== index);
     setPresentation({
       ...presentation,
@@ -299,7 +310,7 @@ export default function PresentationBuilder() {
   };
   
   // Inline editable text component
-  const EditableText = ({ value, onChange, className = '' }) => {
+  const EditableText = ({ value, onChange, className = '' }: { value: string; onChange: (val: string) => void; className?: string }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [tempValue, setTempValue] = useState(value);
     
@@ -422,7 +433,7 @@ export default function PresentationBuilder() {
                   >
                     <div className="font-bold">Section {index + 1}</div>
                     <div className="text-xs opacity-70">
-                      {sectionTemplates[section.type]?.name || section.type}
+                      {sectionTemplates[section.type as keyof typeof sectionTemplates]?.name || section.type}
                     </div>
                   </button>
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition">
