@@ -29,7 +29,7 @@ export default function LoginPage() {
     if (result.success) {
       router.push('/dashboard');
     } else {
-      setError(result.error);
+      setError(result.error || 'An error occurred');
     }
     setLoading(false);
   };

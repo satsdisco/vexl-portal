@@ -7,12 +7,12 @@ import { LogOut, Plus, Presentation, User } from 'lucide-react';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{username?: string} | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const checkAuth = async () => {
     if (!auth.isAuthenticated()) {
@@ -130,7 +130,7 @@ export default function DashboardPage() {
         <div className="mt-12 bg-gray-900 rounded-lg p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Welcome to Vexl Ambassador Portal</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            You're all set up and ready to create amazing Vexl presentations. 
+            You&apos;re all set up and ready to create amazing Vexl presentations. 
             Start by creating your first workshop or explore the templates to get inspired.
           </p>
           <button className="mt-6 px-6 py-3 bg-yellow-400 text-black font-bold rounded hover:bg-yellow-500 transition">

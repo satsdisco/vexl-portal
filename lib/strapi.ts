@@ -30,8 +30,9 @@ export const auth = {
       });
       Cookies.set('jwt', data.jwt, { expires: 30 });
       return { success: true, user: data.user, jwt: data.jwt };
-    } catch (error: any) {
-      return { success: false, error: error.response?.data?.error?.message || 'Registration failed' };
+    } catch (error) {
+      const err = error as {response?: {data?: {error?: {message?: string}}}};
+      return { success: false, error: err.response?.data?.error?.message || 'Registration failed' };
     }
   },
 
@@ -43,8 +44,9 @@ export const auth = {
       });
       Cookies.set('jwt', data.jwt, { expires: 30 });
       return { success: true, user: data.user, jwt: data.jwt };
-    } catch (error: any) {
-      return { success: false, error: error.response?.data?.error?.message || 'Login failed' };
+    } catch (error) {
+      const err = error as {response?: {data?: {error?: {message?: string}}}};
+      return { success: false, error: err.response?.data?.error?.message || 'Login failed' };
     }
   },
 
@@ -57,7 +59,7 @@ export const auth = {
     try {
       const { data } = await strapiClient.get('/users/me');
       return { success: true, user: data };
-    } catch (error) {
+    } catch {
       return { success: false, user: null };
     }
   },
