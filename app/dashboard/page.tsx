@@ -71,6 +71,18 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Visual Presentation Manager - NEW! */}
+          <Link href="/admin" className="bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 rounded-lg p-6 border-2 border-yellow-400/50 hover:from-yellow-400/30 hover:to-yellow-600/30 transition cursor-pointer block">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-3xl">✨</span>
+              <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded font-bold">RECOMMENDED</span>
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-yellow-400">Presentation Manager</h3>
+            <p className="text-gray-300 text-sm">
+              Visual editor to create beautiful slides like the original workshop
+            </p>
+          </Link>
+          
           {/* Create Workshop Card */}
           <Link href="/workshops/new" className="bg-gray-900 rounded-lg p-6 border border-gray-800 hover:border-yellow-400 transition cursor-pointer block">
             <div className="flex items-center justify-between mb-4">
