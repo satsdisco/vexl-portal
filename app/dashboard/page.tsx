@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { auth } from '@/lib/strapi';
 import { LogOut, Plus, Presentation, User } from 'lucide-react';
 
@@ -71,7 +72,7 @@ export default function DashboardPage() {
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Create Workshop Card */}
-          <div className="bg-gray-900 rounded-lg p-6 border border-gray-800 hover:border-yellow-400 transition cursor-pointer">
+          <Link href="/workshops/new" className="bg-gray-900 rounded-lg p-6 border border-gray-800 hover:border-yellow-400 transition cursor-pointer block">
             <div className="flex items-center justify-between mb-4">
               <Plus size={32} className="text-yellow-400" />
               <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded">NEW</span>
@@ -80,19 +81,19 @@ export default function DashboardPage() {
             <p className="text-gray-400 text-sm">
               Start building your own Vexl presentation
             </p>
-          </div>
+          </Link>
 
           {/* My Workshops Card */}
-          <div className="bg-gray-900 rounded-lg p-6 border border-gray-800 hover:border-yellow-400 transition cursor-pointer">
+          <Link href="/workshops" className="bg-gray-900 rounded-lg p-6 border border-gray-800 hover:border-yellow-400 transition cursor-pointer block">
             <div className="flex items-center justify-between mb-4">
               <Presentation size={32} className="text-yellow-400" />
-              <span className="text-xs bg-gray-700 px-2 py-1 rounded">0 WORKSHOPS</span>
+              <span className="text-xs bg-gray-700 px-2 py-1 rounded">VIEW ALL</span>
             </div>
             <h3 className="text-xl font-bold mb-2">My Workshops</h3>
             <p className="text-gray-400 text-sm">
               View and manage your presentations
             </p>
-          </div>
+          </Link>
 
           {/* Profile Card */}
           <div className="bg-gray-900 rounded-lg p-6 border border-gray-800 hover:border-yellow-400 transition cursor-pointer">
