@@ -4,12 +4,13 @@ import { getPresentationBySlug } from '@/lib/strapi-data';
 import WorkshopViewer from './workshop-viewer';
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const presentation = await getPresentationBySlug(params.slug);
+  const { slug } = await params;
+  const presentation = await getPresentationBySlug(slug);
   
   if (!presentation) {
     return {
@@ -25,7 +26,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 // Server Component - fetches data
 export default async function WorkshopPage({ params }: PageProps) {
-  const presentation = await getPresentationBySlug(params.slug);
+  const { slug } = await params;
+  const presentation = await getPresentationBySlug(slug);
 
   if (!presentation) {
     notFound();
