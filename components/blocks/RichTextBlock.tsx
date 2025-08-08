@@ -20,7 +20,7 @@ export const RichTextBlockComponent = memo(function RichTextBlock({ block }: Ric
             <h1 
               className="text-4xl md:text-5xl font-bold mt-8 mb-4"
               style={{ 
-                fontFamily: vexlBrand.typography.heading,
+                fontFamily: vexlBrand.typography.fontFamily.primary,
                 color: vexlBrand.colors.primary.yellow 
               }}
             >
@@ -31,7 +31,7 @@ export const RichTextBlockComponent = memo(function RichTextBlock({ block }: Ric
             <h2 
               className="text-2xl md:text-3xl font-bold mt-6 mb-3"
               style={{ 
-                fontFamily: vexlBrand.typography.heading,
+                fontFamily: vexlBrand.typography.fontFamily.primary,
                 color: vexlBrand.colors.primary.white 
               }}
             >
