@@ -23,7 +23,7 @@ export const QuoteBlockComponent = memo(function QuoteBlock({ block }: QuoteBloc
       <p 
         className="text-2xl md:text-3xl font-medium italic leading-relaxed relative z-10 px-12"
         style={{ 
-          fontFamily: vexlBrand.typography.heading,
+          fontFamily: vexlBrand.typography.fontFamily.primary,
           color: vexlBrand.colors.primary.white 
         }}
       >

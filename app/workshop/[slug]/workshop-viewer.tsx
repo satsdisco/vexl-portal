@@ -184,7 +184,7 @@ export default function WorkshopViewer({ presentation }: WorkshopViewerProps) {
                     <h2 
                       className="text-4xl md:text-5xl font-bold mb-4"
                       style={{ 
-                        fontFamily: vexlBrand.typography.heading,
+                        fontFamily: vexlBrand.typography.fontFamily.primary,
                         color: vexlBrand.colors.primary.yellow 
                       }}
                     >
