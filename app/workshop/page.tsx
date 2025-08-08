@@ -19,38 +19,33 @@ export default function WorkshopList() {
 
   const loadPresentations = async () => {
     try {
-      // Try to load from Strapi
-      const result = await presentationAPI.getAll('*');
+      // Load from Strapi ONLY - no localStorage fallback
+      const { strapiFetch } = await import('@/lib/strapi-fetch');
+      const response = await strapiFetch.getPresentations({
+        populate: 'sections',
+        sort: 'createdAt:desc'
+      });
       
-      if (result.success && result.data.length > 0) {
-        const formatted = result.data.map(convertFromStrapiFormat);
+      if (response.data && response.data.length > 0) {
+        const formatted = response.data.map(item => ({
+          id: item.id.toString(),
+          slug: item.attributes.slug,
+          title: item.attributes.title,
+          description: item.attributes.description,
+          duration: item.attributes.duration,
+          difficulty: item.attributes.difficulty,
+          isTemplate: item.attributes.isTemplate,
+          isMaster: item.attributes.isMaster,
+          sections: item.attributes.sections?.data?.length || 0,
+          author: 'Vexl Team'
+        }));
         setPresentations(formatted);
       } else {
-        // Fallback: always include the template
-        setPresentations([{
-          id: 'template',
-          title: 'Vexl: The Future of P2P Bitcoin Trading',
-          description: 'Your network is your net worth - Learn how Vexl revolutionizes peer-to-peer Bitcoin trading',
-          duration: 30,
-          difficulty: 'beginner',
-          isTemplate: true,
-          sections: 12,
-          author: 'Vexl Team'
-        }]);
+        setPresentations([]);
       }
     } catch (error) {
-      console.error('Error loading presentations:', error);
-      // Fallback to template
-      setPresentations([{
-        id: 'template',
-        title: 'Vexl: The Future of P2P Bitcoin Trading',
-        description: 'Your network is your net worth - Learn how Vexl revolutionizes peer-to-peer Bitcoin trading',
-        duration: 30,
-        difficulty: 'beginner',
-        isTemplate: true,
-        sections: 12,
-        author: 'Vexl Team'
-      }]);
+      console.error('Error loading presentations from Strapi:', error);
+      setPresentations([]);
     } finally {
       setLoading(false);
     }
@@ -177,11 +172,11 @@ export default function WorkshopList() {
                 {/* Actions */}
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/workshop/${presentation.id}`}
+                    href={`/workshop/${presentation.slug || presentation.id}`}
                     className="flex-1 px-4 py-2 bg-yellow-400 text-black font-bold rounded-lg hover:bg-yellow-500 transition flex items-center justify-center gap-2"
                   >
                     <Play size={16} />
-                    Start Workshop
+                    {presentation.isMaster ? 'View Masterclass' : 'Start Workshop'}
                   </Link>
                 </div>
               </div>
