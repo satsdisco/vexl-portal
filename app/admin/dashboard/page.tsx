@@ -25,6 +25,7 @@ import Link from 'next/link';
 import { vexlBrand } from '@/lib/vexl-brand-manual';
 import { animations } from '@/lib/animations';
 import PolishedLoader from '@/components/PolishedLoader';
+import { presentationAPI, convertFromStrapiFormat } from '@/lib/strapi-service';
 
 interface Presentation {
   id: string;
@@ -59,28 +60,80 @@ export default function AdminDashboard() {
   }, []);
 
   const loadDashboardData = async () => {
-    // Load presentations from localStorage or API
-    const storedPresentations = localStorage.getItem('vexl-presentations');
-    if (storedPresentations) {
-      const parsed = JSON.parse(storedPresentations);
-      setPresentations(parsed);
-      setStats({
-        totalPresentations: parsed.length,
-        totalViews: parsed.reduce((acc: number, p: Presentation) => acc + (p.views || 0), 0),
-        activeUsers: Math.floor(Math.random() * 100) + 50,
-        lastUpdated: new Date().toLocaleDateString()
-      });
+    try {
+      // Try to load from Strapi first
+      const result = await presentationAPI.getAll('*');
+      
+      if (result.success && result.data.length > 0) {
+        // Convert Strapi format to frontend format
+        const formattedPresentations = result.data.map(convertFromStrapiFormat);
+        setPresentations(formattedPresentations);
+        setStats({
+          totalPresentations: formattedPresentations.length,
+          totalViews: formattedPresentations.reduce((acc: number, p: any) => acc + (p.views || 0), 0),
+          activeUsers: Math.floor(Math.random() * 100) + 50,
+          lastUpdated: new Date().toLocaleDateString()
+        });
+      } else {
+        // Fallback to localStorage if Strapi is empty or unavailable
+        const storedPresentations = localStorage.getItem('vexl-presentations');
+        if (storedPresentations) {
+          const parsed = JSON.parse(storedPresentations);
+          setPresentations(parsed);
+          setStats({
+            totalPresentations: parsed.length,
+            totalViews: parsed.reduce((acc: number, p: Presentation) => acc + (p.views || 0), 0),
+            activeUsers: Math.floor(Math.random() * 100) + 50,
+            lastUpdated: new Date().toLocaleDateString()
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+      // Fallback to localStorage on error
+      const storedPresentations = localStorage.getItem('vexl-presentations');
+      if (storedPresentations) {
+        const parsed = JSON.parse(storedPresentations);
+        setPresentations(parsed);
+        setStats({
+          totalPresentations: parsed.length,
+          totalViews: parsed.reduce((acc: number, p: Presentation) => acc + (p.views || 0), 0),
+          activeUsers: Math.floor(Math.random() * 100) + 50,
+          lastUpdated: new Date().toLocaleDateString()
+        });
+      }
     }
     
     setTimeout(() => setLoading(false), 500);
   };
 
-  const deletePresentation = (id: string) => {
+  const deletePresentation = async (id: string) => {
     if (!confirm('Are you sure you want to delete this presentation?')) return;
     
-    const updated = presentations.filter(p => p.id !== id);
-    setPresentations(updated);
-    localStorage.setItem('vexl-presentations', JSON.stringify(updated));
+    try {
+      // Try to delete from Strapi
+      const result = await presentationAPI.delete(id);
+      
+      if (result.success) {
+        // Update local state
+        const updated = presentations.filter(p => p.id !== id);
+        setPresentations(updated);
+        
+        // Also update localStorage as backup
+        localStorage.setItem('vexl-presentations', JSON.stringify(updated));
+      } else {
+        // Fallback to localStorage only
+        const updated = presentations.filter(p => p.id !== id);
+        setPresentations(updated);
+        localStorage.setItem('vexl-presentations', JSON.stringify(updated));
+      }
+    } catch (error) {
+      console.error('Error deleting presentation:', error);
+      // Fallback to localStorage only
+      const updated = presentations.filter(p => p.id !== id);
+      setPresentations(updated);
+      localStorage.setItem('vexl-presentations', JSON.stringify(updated));
+    }
   };
 
   const filteredPresentations = presentations.filter(p => 
