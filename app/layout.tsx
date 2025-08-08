@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 import PWAProvider from "@/components/PWAProvider";
+import { ClerkProvider } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -100,9 +102,24 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="antialiased font-sans bg-black text-white">
-        <PWAProvider>
-          {children}
-        </PWAProvider>
+        <ClerkProvider
+          appearance={{
+            baseTheme: dark,
+            variables: {
+              colorPrimary: '#FCEE0A',
+              colorBackground: '#000000',
+              colorText: '#FFFFFF',
+            },
+            elements: {
+              formButtonPrimary: 'bg-yellow-400 hover:bg-yellow-500 text-black',
+              card: 'bg-gray-900 border-gray-800',
+            }
+          }}
+        >
+          <PWAProvider>
+            {children}
+          </PWAProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
