@@ -32,10 +32,10 @@ export default function WorkshopList() {
           slug: item.attributes.slug,
           title: item.attributes.title,
           description: item.attributes.description,
-          duration: item.attributes.duration,
-          difficulty: item.attributes.difficulty,
-          isTemplate: item.attributes.isTemplate,
-          isMaster: item.attributes.isMaster,
+          duration: (item.attributes as any).duration || '30 min',
+          difficulty: (item.attributes as any).difficulty || 'Beginner',
+          isTemplate: (item.attributes as any).isTemplate || false,
+          isMaster: (item.attributes as any).isMaster || false,
           sections: item.attributes.sections?.data?.length || 0,
           author: 'Vexl Team'
         }));
