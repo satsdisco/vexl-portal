@@ -19,12 +19,9 @@ export const DeviceMockupBlockComponent = memo(function DeviceMockupBlock({ bloc
     return (
       <div className="my-12">
         <PolishedPhoneMockup
-          screenshots={screenshots.map(s => ({
-            url: s.url.startsWith('http') ? s.url : `${process.env.NEXT_PUBLIC_STRAPI_URL}${s.url}`,
-            alt: s.alt || 'App screenshot',
-            caption: s.caption,
-          }))}
-          device={block.device || 'iphone14pro'}
+          screenshots={screenshots.map(s => 
+            s.url.startsWith('http') ? s.url : `${process.env.NEXT_PUBLIC_STRAPI_URL}${s.url}`
+          )}
         />
         {screenshots[0]?.caption && (
           <p 
