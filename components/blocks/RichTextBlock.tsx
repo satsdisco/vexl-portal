@@ -50,7 +50,7 @@ export const RichTextBlockComponent = memo(function RichTextBlock({ block }: Ric
             <p 
               className="mb-4 leading-relaxed"
               style={{ 
-                fontFamily: vexlBrand.typography.body,
+                fontFamily: vexlBrand.typography.fontFamily.primary,
                 color: vexlBrand.colors.gray[300],
                 fontSize: '1.125rem',
                 lineHeight: '1.75'
