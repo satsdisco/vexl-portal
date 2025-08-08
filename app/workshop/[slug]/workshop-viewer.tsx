@@ -8,11 +8,15 @@ import { vexlBrand } from '@/lib/vexl-brand-manual';
 import { BlockRenderer } from '@/components/blocks/BlockRenderer';
 import type { Presentation } from '@/lib/strapi-types';
 
+import ForkButton from '@/components/ForkButton';
+import type { UserRole } from '@/lib/auth-helpers';
+
 interface WorkshopViewerProps {
   presentation: Presentation;
+  userRole?: UserRole;
 }
 
-export default function WorkshopViewer({ presentation }: WorkshopViewerProps) {
+export default function WorkshopViewer({ presentation, userRole }: WorkshopViewerProps) {
   const [currentSection, setCurrentSection] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sections = presentation.attributes.sections?.data || [];
@@ -107,7 +111,12 @@ export default function WorkshopViewer({ presentation }: WorkshopViewerProps) {
             </h1>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <ForkButton
+              presentationId={presentation.id}
+              presentationTitle={presentation.attributes.title}
+              userRole={userRole}
+            />
             <Link 
               href="/workshop"
               className="p-2 rounded transition hover:bg-gray-800"

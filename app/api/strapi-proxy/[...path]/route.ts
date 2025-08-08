@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { getUserRole } from '@/lib/auth-helpers';
 
 const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
@@ -36,7 +36,8 @@ export async function POST(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
-  // Check role - must be at least ambassador
+  // Get user and role
+  const user = await currentUser();
   const role = await getUserRole();
   if (role === 'viewer') {
     return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
@@ -44,12 +45,22 @@ export async function POST(
   
   const body = await req.json();
   
+  // Forward request with auth headers
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${STRAPI_ADMIN_TOKEN}`,
+    'x-user-id': userId,
+    'x-role': role,
+  };
+  
+  // Add user email if available
+  if (user?.emailAddresses?.[0]?.emailAddress) {
+    headers['x-user-email'] = user.emailAddresses[0].emailAddress;
+  }
+  
   const response = await fetch(`${STRAPI_URL}/api/${pathString}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${STRAPI_ADMIN_TOKEN}`,
-    },
+    headers,
     body: JSON.stringify(body),
   });
   
@@ -70,7 +81,7 @@ export async function PUT(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
-  // Check role - must be at least ambassador
+  // Get role
   const role = await getUserRole();
   if (role === 'viewer') {
     return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
@@ -83,6 +94,8 @@ export async function PUT(
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${STRAPI_ADMIN_TOKEN}`,
+      'x-user-id': userId,
+      'x-role': role,
     },
     body: JSON.stringify(body),
   });

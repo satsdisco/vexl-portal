@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getPresentationBySlug } from '@/lib/strapi-data';
 import WorkshopViewer from './workshop-viewer';
+import { getUserRole } from '@/lib/auth-helpers';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -33,5 +34,8 @@ export default async function WorkshopPage({ params }: PageProps) {
     notFound();
   }
 
-  return <WorkshopViewer presentation={presentation} />;
+  // Get user role for fork button
+  const userRole = await getUserRole();
+
+  return <WorkshopViewer presentation={presentation} userRole={userRole} />;
 }

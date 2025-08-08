@@ -52,9 +52,21 @@ export const PresentationSchema = z.object({
     slug: z.string(),
     description: z.string().optional(),
     isMaster: z.boolean().optional(),
+    isTemplate: z.boolean().optional(),
+    status: z.enum(['draft', 'published']).optional(),
+    ownerId: z.string().optional(),
     duration: z.number().optional(),
     difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
     tags: z.array(z.string()).optional(),
+    forkOf: z.object({
+      data: z.object({
+        id: z.number(),
+        attributes: z.object({
+          title: z.string(),
+          slug: z.string(),
+        }),
+      }).nullable(),
+    }).optional(),
     sections: z.object({
       data: z.array(SectionSchema),
     }).optional(),
