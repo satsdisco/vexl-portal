@@ -377,7 +377,7 @@ export default function MergeViewer({ mergeData, presentation }: MergeViewerProp
                             <label className="flex items-center">
                               <input
                                 type="checkbox"
-                                checked={selection?.blocks?.[blockIndex]?.fieldAccept?.[field.key as keyof typeof selection.blocks[0].fieldAccept] === true}
+                                checked={selection?.blocks?.[blockIndex]?.fieldAccept?.[field.key as keyof NonNullable<typeof selection.blocks>[0]['fieldAccept']] === true}
                                 onChange={(e) => {
                                   const current = selection?.blocks?.[blockIndex]?.fieldAccept || {};
                                   updateBlockSelection(plan, blockIndex, blockPlan, {

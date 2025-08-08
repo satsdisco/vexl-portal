@@ -20,7 +20,7 @@ export default function LivePreview({ section }: LivePreviewProps) {
     switch (section.backgroundColor) {
       case 'gradient':
         return {
-          background: `linear-gradient(135deg, ${vexlBrand.colors.primary.yellow} 0%, ${vexlBrand.colors.primary.orange} 100%)`,
+          background: `linear-gradient(135deg, ${vexlBrand.colors.primary.yellow} 0%, ${vexlBrand.colors.semantic.warning} 100%)`,
         };
       case 'yellow':
         return { backgroundColor: vexlBrand.colors.primary.yellow };
@@ -260,7 +260,7 @@ function getButtonStyle(style: string) {
       };
     case 'gradient':
       return {
-        background: `linear-gradient(135deg, ${vexlBrand.colors.primary.yellow} 0%, ${vexlBrand.colors.primary.orange} 100%)`,
+        background: `linear-gradient(135deg, ${vexlBrand.colors.primary.yellow} 0%, ${vexlBrand.colors.semantic.warning} 100%)`,
         color: 'black',
       };
     default:
