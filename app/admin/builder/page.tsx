@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Save, Play, Plus, Trash2, Eye, Edit3, ChevronUp, ChevronDown, Settings, Smartphone, Network } from 'lucide-react';
+import { Save, Play, Plus, Trash2, Eye, Edit3, ChevronUp, ChevronDown, Settings, Smartphone, Network, GitBranch } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { vexlBrand } from '@/lib/vexl-brand-manual';
 import PolishedPhoneMockup from '@/components/interactive/PolishedPhoneMockup';
 import NetworkVisualization from '@/components/interactive/NetworkVisualization';
 import ScreenshotUploader from '@/components/ScreenshotUploader';
+import type { Presentation as StrapiPresentation } from '@/lib/strapi-types';
 
 // Section templates - full screen, adaptive content
 const sectionTemplates = {
@@ -130,14 +132,62 @@ interface Presentation {
 }
 
 export default function PresentationBuilder() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const slug = searchParams.get('slug');
+  const forked = searchParams.get('forked') === 'true';
+  
   const [presentation, setPresentation] = useState<Presentation>({
     title: 'New Presentation',
     sections: []
   });
+  const [strapiPresentation, setStrapiPresentation] = useState<StrapiPresentation | null>(null);
+  const [isFork, setIsFork] = useState(false);
+  const [loading, setLoading] = useState(false);
   
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [previewMode, setPreviewMode] = useState(false);
   const [editingField, setEditingField] = useState<string | null>(null);
+  
+  // Load presentation if slug is provided
+  useEffect(() => {
+    if (slug) {
+      loadPresentation(slug);
+    }
+  }, [slug]);
+  
+  async function loadPresentation(presentationSlug: string) {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/strapi-proxy/presentations?filters[slug][$eq]=${presentationSlug}&populate=*`);
+      const data = await response.json();
+      
+      if (data.data && data.data.length > 0) {
+        const pres = data.data[0];
+        setStrapiPresentation(pres);
+        setIsFork(!!pres.attributes.forkOf?.data);
+        
+        // Convert Strapi data to builder format
+        setPresentation({
+          title: pres.attributes.title || 'Untitled',
+          sections: pres.attributes.sections?.data?.map((section: any) => ({
+            id: section.id.toString(),
+            type: section.attributes.type || 'trustComparison',
+            ...section.attributes
+          })) || []
+        });
+        
+        // Show success message if just forked
+        if (forked) {
+          alert('Presentation forked successfully! You can now edit your copy.');
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load presentation:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
   
   const currentSection = presentation.sections[currentSectionIndex];
   
@@ -608,6 +658,15 @@ export default function PresentationBuilder() {
         </div>
         
         <div className="flex gap-2">
+          {isFork && strapiPresentation && (
+            <Link
+              href={`/admin/diff/${strapiPresentation.attributes.slug}`}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded flex items-center gap-2"
+            >
+              <GitBranch size={16} />
+              View Diff
+            </Link>
+          )}
           <button
             onClick={() => setPreviewMode(!previewMode)}
             className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded flex items-center gap-2"
@@ -616,7 +675,7 @@ export default function PresentationBuilder() {
             Preview
           </button>
           <Link
-            href="/presentation/preview"
+            href={slug ? `/workshop/${slug}` : "/presentation/preview"}
             className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded flex items-center gap-2"
           >
             <Play size={16} />
@@ -709,7 +768,16 @@ export default function PresentationBuilder() {
         
         {/* Main Preview Area */}
         <div className="flex-1 overflow-auto bg-gray-950">
-          {renderSectionPreview()}
+          {loading ? (
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+                <p className="text-gray-400">Loading presentation...</p>
+              </div>
+            </div>
+          ) : (
+            renderSectionPreview()
+          )}
         </div>
       </div>
     </div>
