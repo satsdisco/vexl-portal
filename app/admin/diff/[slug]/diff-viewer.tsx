@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronRight, Plus, Minus, Edit2, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ChevronRight, Plus, Minus, Edit2, ArrowLeft, GitPullRequest } from 'lucide-react';
 import type { DiffResponse, ModifiedSection, SectionDiff, ModifiedBlock } from '@/lib/diff-types';
 import type { Presentation } from '@/lib/strapi-types';
 import { vexlBrand } from '@/lib/vexl-brand-manual';
@@ -184,6 +184,13 @@ export default function DiffViewer({ diffData, presentation }: DiffViewerProps) 
                 </p>
               </div>
             </div>
+            <Link
+              href={`/admin/merge/${presentation.attributes.slug}`}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            >
+              <GitPullRequest className="w-4 h-4" />
+              Pull Updates from Master
+            </Link>
             <div className="flex items-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
