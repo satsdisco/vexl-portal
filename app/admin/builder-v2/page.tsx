@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
+
+export const dynamic = 'force-dynamic';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -117,7 +119,7 @@ const blockTemplates = {
   },
 };
 
-export default function BuilderV2() {
+function BuilderV2Content() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const slug = searchParams.get('slug');
@@ -719,5 +721,20 @@ export default function BuilderV2() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BuilderV2() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading builder...</p>
+        </div>
+      </div>
+    }>
+      <BuilderV2Content />
+    </Suspense>
   );
 }
